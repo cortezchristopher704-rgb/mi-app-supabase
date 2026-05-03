@@ -5,16 +5,28 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-async function obtenerEstudiantes() {
-  const { data, error } = await supabase
-    .from('Estudiantes')
-    .select('*')
+const INSERTAR = true // ← cambia a true solo cuando quieras insertar
 
-  if (error) {
-    console.log('Error:', error)
-  } else {
-    console.log('Datos:', data)
-  }
+async function insertarEstudiante() {
+  const { data, error } = await supabase
+    .from('estudiantes')
+    .insert([
+      { nombre: 'Maria', carrera: 'Enfermería' }
+    ])
+
+  console.log('INSERT:', data, error)
 }
 
-obtenerEstudiantes()
+async function obtenerEstudiantes() {
+  const { data, error } = await supabase
+    .from('estudiantes')
+    .select('*')
+
+  console.log('SELECT:', data, error)
+}
+
+if (INSERTAR) {
+  await insertarEstudiante()
+}
+
+await obtenerEstudiantes()

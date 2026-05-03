@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registro de Estudiantes</title>
+</head>
+<body>
+
+  <h2>Agregar Estudiante</h2>
+
+  <input type="text" id="nombre" placeholder="Nombre">
+  <input type="text" id="carrera" placeholder="Carrera">
+  <button onclick="guardar()">Guardar</button>
+
+  <p id="mensaje"></p>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient(
+      'https://jrsbbjdubfkvbjkuevys.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impyc2JiamR1YmZrdmJqa3VldnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2ODE2NzksImV4cCI6MjA5MzI1NzY3OX0.RD7JbpBCW7tE2v-M6hxUjHVOnKFdhZ--Fi0NcXt5z8Q'
+    )
+
+    async function guardar() {
+      const nombre = document.getElementById('nombre').value
+      const carrera = document.getElementById('carrera').value
+
+      const { error } = await supabase
+        .from('estudiantes')
+        .insert([{ nombre, carrera }])
+
+      const mensaje = document.getElementById('mensaje')
+
+      if (error) {
+        mensaje.textContent = 'Error al guardar'
+      } else {
+        mensaje.textContent = 'Guardado correctamente'
+      }
+    }
+
+    window.guardar = guardar
+  </script>
+
+</body>
+</html>
